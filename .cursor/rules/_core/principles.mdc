@@ -8,5 +8,8 @@ alwaysApply: true
 1. **Observability:** Add excessive logging.
 2. **Many Small Files:** ALWAYS prefer creating new files over adding to existing ones.
 3. **Micro-Milestones:** Perform work in commit-sized chunks. Optimize for easy rewinding.
+4. **Human-readable over DRY:** we want DRY code, but not at the expense of it being human-readable
+5. **Use JSDocs:** for new code that you write.
+6. **Prefer test-driven development:** write red failing tests first, then green passing tests, then refactor. Commit, then move to the next test.
 
 **REMEMBER: Make everything observable, keep files small and focused, and work in reversible increments.**
