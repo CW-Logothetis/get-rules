@@ -1,0 +1,64 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Manual Test Plan Template Rule
+
+When asked to generate a manual test plan, use the following structure and sections. Adapt the details to the specific feature or requirement under test.
+
+If you believe the user has not given you sufficient information to fill out any of these sections, please ask for more information.
+
+---
+
+## 1. Test Scope
+- **Components:**
+  - List all relevant UI components, pages, or flows.
+- **Files:**
+  - List all relevant files that are not React components: utils, helpers, graphql etc.
+- **Focus:**
+  - List the key behaviors, UI states, or tracking/analytics to verify.
+
+## 2. Preconditions
+- List the required data states, user roles, or environment setup needed to execute the tests. Example:
+  - Profiles with varying data (e.g., updatedAt recent/old/missing, contact info present/missing, different sources, etc.)
+
+## 3. Test Matrix
+- Fill out a test matrix with all relevant permutations for the feature.
+- A Scenario number and Notes columns are mandatory. Use your discretion for other columns.
+- For example:
+
+| Scenario | Source | Profile Updated At | Contact Info | Expected Button | Notes |
+|---|---|---|---|---|---|
+| 1 | Expert Search | >3 months ago | Present | Update | Old profile |
+| 2 | Expert Search | Missing | Present | Update | No update date |
+| 3 | Expert Search | <3 months ago | Missing | Update | Fresh, but no contact |
+| 4 | Expert Search | <3 months ago | Present | Index | Fresh, has contact |
+| 5 | Expert Finder | >3 months ago | Present | Update | Old profile, source=ExpertFinder |
+
+## 4. Steps
+### A. UI/Logic Verification
+1. Open each relevant component/page.
+2. For each scenario in the matrix:
+   - Locate or create the required data state.
+   - Observe the UI (button label, state, etc.).
+   - Click/interact as needed. Confirm correct action/modal/redirect.
+   - Remember to add a step to check the dev tools console for errors
+   - Remember to add a step to check the network tab for Apollo to ensure that payloads and responses are as you would expect
+3. Repeat for all entry points (e.g., page, tab, dialog, modal, etc.).
+
+### B. Tracking/Analytics Verification - if applicable
+1. For each action (if applicable):
+   - Confirm the correct tracking/analytics payload is sent (e.g., via dev tools network tab, logs, or test hooks).
+   - Take screenshots of the network tab to confirm the above. Save screenshots in a `screenshots` directory. Create the directory if it does not exist already.
+
+## 5. Edge Cases
+- List and test edge cases (e.g., missing/malformed data, disabled states, fallback logic, etc.).
+
+## 6. Acceptance Criteria
+- List the pass/fail criteria for the test (e.g., UI always matches logic, tracking always sent, no regressions, etc.).
+
+---
+
+**Usage:**
+- Select this rule when asked to create a manual test plan. Fill in the details for the specific feature or requirement.
