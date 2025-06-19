@@ -36,9 +36,11 @@ globs: **/*.tsx, **/*.jsx, components/**/*
 - Use state management libraries only when necessary
 
 ## Performance
-- only use memoization if performance will be truly hit. Modern browser engines can run many calculations
-- If you have any doubt about when to memoize, read: https://overreacted.io/before-you-memo/
-- Implement proper memoization (useMemo, useCallback)
+- only use memoization (useMemo, useCallback) if performance will be truly hit. **Remember** that modern browser engines can run many calculations without hurting performance AND return results before backend data arrives from the network.
+- Before you memoize, stop to consider theses solutions:
+- - Solution 1: can you move State Down?
+- - Solution 2: can you Lift Content Up?
+- If you have any doubt about when to memoize, read this markdown file in our cursor rules: "before-you-memo.md"
 - Use React.memo for EXPENSIVE components
 - Avoid unnecessary re-renders
 - Implement proper lazy loading
