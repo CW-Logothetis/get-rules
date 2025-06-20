@@ -7,10 +7,10 @@ This rule automates the drafting of a Merge Request description for a bug fix. I
 When the user invokes this rule, follow these steps:
 
 1.  **Get Git Context**
-    Run the command `git diff develop...HEAD` to get the diff between the `develop` branch and the user's current local branch. This is your primary source for understanding the code changes.
+    Run `git diff develop...HEAD` to get the diff between the `develop` branch and the user's current local branch. This is your primary source for understanding the code changes.
 
 2.  **Check for Jira Tickets (Optional)**
-    Ask the user: "Are there any Jira tickets associated with this MR? If so, please provide the ticket numbers." If they provide tickets, you will use this information to describe the bug. Otherwise, you will infer the bug's behavior from the git diff.
+    Ask the user: "Please provide any relevant Jira tickets associated with this MR. If not, type 'no' and I'll continue without them." If they provide tickets, you will run the Jira CLI commands (see tools/cli/jira.md) and use this information to describe the bug. Otherwise, you will infer the bug's behavior from the git diff.
 
 3.  **Analyze and Draft**
     -   Analyze the output from the `git diff`. Identify the core problem that was fixed and how the new code solves it.
@@ -39,5 +39,55 @@ When the user invokes this rule, follow these steps:
         -   **Changed Components (from git diff):** Use light green text (`color:#90EE90`) and a light green border (`stroke:#90EE90`) to highlight them.
     -   Add the complete diagram markdown to the MR description under a `## Component Architecture Diagram` section.
 
-5.  **Present to User**
+5. **Add Mandatory sections**
+    ```
+    ## Screenshots
+
+    <!-- Paste any relevant screenshots that demonstrate the bug behavior and/or the fixed behavior. -->
+
+    ## Checklist:
+
+    - [ ] I have performed a self-review of my code
+    - [ ] I have provided JSDoc comments for all components to explain their purpose and usage
+    - [ ] My changes generate no new warnings or errors in the console
+    - [ ] New and existing unit tests written in Jest and end-to-end tests written in Cypress pass locally with my changes
+    ```    
+
+6.  **Present to User**
     Combine the filled-out template and the Mermaid diagram into a single markdown block and present it to the user.
+
+Example:
+
+## Technical Description of Bug Behavior
+
+<!-- What actually happens -->
+If Formers fail, the user is prevented from opening Customers when they click on the Customers tab.
+
+- The fail is in the `expertFinderSearch` query, called in `ResultsArea`, and used for the company info in the Header. 
+- The query only returned status information for Formers (pending, error, completed) but not for Customers. 
+- The status determines if the `ResultsArea` routes to the Formers or Customers Lists. 
+- When Formers failed, there was no independent status for Customers, so the routing logic couldn't determine if Customers were available, blocking access to the Customers tab.
+
+## Solution Provided
+- Updated the `expertFinderSearch.graphql` query to include a customers field that mirrors the existing formers field.
+- Modified the `ResultsArea.tsx` component to:
+  - Extract both `formersStatus` and `customersStatus` from the query response
+  - Create a unified `ExpertFinderSearchStatus` object containing both statuses
+  - Pass this to `ExpertsPanel` which uses `useExpertFinderQuerySelector` to determine the appropriate status based on the selected tab
+
+The `ExpertList` component now checks `currentTabStatus` independently for each tab type:
+
+```const currentTabStatus = isTypeFormers ? expertFinderSearchStatus?.formers : expertFinderSearchStatus?.customers;```
+
+![image](/uploads/8482f7d40c349a4f1fc4ac16f96ac1e7/image.png){width=1464 height=608}
+
+## Screenshots
+
+<!-- Paste any relevant screenshots that demonstrate the bug behavior and/or the fixed behavior. -->
+
+## Checklist:
+
+- [ ] I have performed a self-review of my code
+- [ ] I have provided JSDoc comments for all components to explain their purpose and usage
+- [ ] My changes generate no new warnings or errors in the console
+- [ ] New and existing unit tests written in Jest and end-to-end tests written in Cypress pass locally with my changes
