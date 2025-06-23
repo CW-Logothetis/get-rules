@@ -27,6 +27,6 @@ alwaysApply: true
 ---
 # Package Managers
 
-- **Default:** Use `pnpm` unless explicitly specified otherwise.
+- **Default:** Use `yarn` unless explicitly specified otherwise.
 
-**REMEMBER: Always use pnpm as the default package manager for all operations.**
+**REMEMBER: Always use yarn as the default package manager for all operations.**
