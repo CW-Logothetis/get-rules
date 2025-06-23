@@ -1,0 +1,48 @@
+# Dynamic Merge Request Description Generator
+
+This rule automates the drafting of a Merge Request description for a new feature. It uses the current git diff to understand the changes and can optionally incorporate information from Jira tickets to provide context.
+
+## Instructions for AI
+
+When the user invokes this rule, follow these steps:
+
+1.  **Get Git Context**
+    Run `git diff develop...HEAD` to get the diff between the `develop` branch and the user's current local branch. This is your primary source for understanding the code changes.
+
+2.  **Check for Jira Tickets (Optional)**
+    Ask the user: "Please provide any relevant Jira tickets associated with this MR. If not, type 'no' and I'll continue without them." If they provide tickets, you will run the Jira CLI commands (see tools/cli/jira.md) and use this information to describe the bug. Otherwise, you will infer the bug's behavior from the git diff.
+
+3.  **Analyze and Draft**
+    -   Analyze the output from the `git diff`. Identify the core problem that was fixed and how the new code solves it.
+    -   If Jira tickets were provided, use their titles, descriptions and comments for the "Bug Behavior" section.
+    -   Fill out the template below. Prefer bullet points instead of sentences. Be concise and clear.
+
+    **Template to Fill:**
+    ````markdown
+    ## Description
+
+   <!-- Describe your changes in detail--> 
+    ````
+
+4. **Add notes of tests added**
+````markdown
+       ## Testing
+       <!-- Please describe in detail how you tested your changes.-->
+       <!-- Include details of your testing environment, and the tests you ran to-->
+
+5. **Add Mandatory sections**
+    ```
+    ## Screenshots
+
+    <!-- Paste any relevant screenshots that demonstrate the bug behavior and/or the fixed behavior. -->
+
+    ## Checklist:
+
+    - [ ] I have performed a self-review of my code
+    - [ ] I have provided JSDoc comments for all components to explain their purpose and usage
+    - [ ] My changes generate no new warnings or errors in the console
+    - [ ] New and existing unit tests written in Jest and end-to-end tests written in Cypress pass locally with my changes
+    ```    
+
+6.  **Present to User**
+    Combine the filled-out template into a single markdown block and present it to the user.
