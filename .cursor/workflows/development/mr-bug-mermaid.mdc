@@ -79,7 +79,59 @@ The `ExpertList` component now checks `currentTabStatus` independently for each 
 
 ```const currentTabStatus = isTypeFormers ? expertFinderSearchStatus?.formers : expertFinderSearchStatus?.customers;```
 
-![image](/uploads/8482f7d40c349a4f1fc4ac16f96ac1e7/image.png){width=1464 height=608}
+## Mermaid diagram
+graph TD
+    A["ExpertFinderTab<br/>(Main container)"] --> B["SearchTabs<br/>(Company accordion with Formers/Customers tabs)"]
+    A --> C["ResultsArea<br/>(Main results display area)"]
+    
+    B --> B1["RoutableAccordion<br/>(Per company)"]
+    B1 --> B2["Tab: Formers<br/>(Shows formers count/status)"]
+    B1 --> B3["Tab: Customers<br/>(Shows customers count/status)"]
+    
+    C --> C1["ExpertFinderTabContext.Provider<br/>(Provides company context)"]
+    C1 --> C2["SearchParamsProvider<br/>(URL search params)"]
+    C2 --> C3["ExpertsPanel<br/>(Expert display logic)"]
+    
+    C3 --> D["HeaderWithLegend<br/>(Company info header)"]
+    C3 --> E["ExpertList<br/>(Main expert list component)"]
+    
+    E --> F["Filters"]
+    F --> F1["FormersFiltersContainer<br/>(When selectedTab = formers)"]
+    F --> F2["CustomersFiltersContainer<br/>(When selectedTab = customers)"]
+    
+    E --> G["Expert Items"]
+    G --> G1["FormersListItem<br/>(Individual former expert)"]
+    G --> G2["CustomerListItem<br/>(Individual customer expert)"]
+    
+    E --> H["Messages"]
+    H --> H1["ErrorMessage<br/>(When currentTabStatus = FAILED)"]
+    H --> H2["NoExpertResultsMessage<br/>(When no results)"]
+    H --> H3["Loading State<br/>(When currentTabStatus = PENDING)"]
+    
+    E --> I["Pagination<br/>(Results pagination)"]
+    
+    style A fill:#000000,stroke:#333333,color:#ffffff
+    style B fill:#000000,stroke:#333333,color:#ffffff
+    style C fill:#000000,stroke:#333333,color:#90EE90
+    style D fill:#000000,stroke:#333333,color:#ffffff
+    style E fill:#000000,stroke:#333333,color:#90EE90
+    style F fill:#000000,stroke:#333333,color:#ffffff
+    style G fill:#000000,stroke:#333333,color:#ffffff
+    style H fill:#000000,stroke:#333333,color:#ffffff
+    style I fill:#000000,stroke:#333333,color:#ffffff
+    style B1 fill:#000000,stroke:#333333,color:#ffffff
+    style B2 fill:#000000,stroke:#333333,color:#ffffff
+    style B3 fill:#000000,stroke:#333333,color:#ffffff
+    style C1 fill:#000000,stroke:#333333,color:#ffffff
+    style C2 fill:#000000,stroke:#333333,color:#ffffff
+    style C3 fill:#000000,stroke:#333333,color:#90EE90
+    style F1 fill:#000000,stroke:#333333,color:#ffffff
+    style F2 fill:#000000,stroke:#333333,color:#ffffff
+    style G1 fill:#000000,stroke:#333333,color:#ffffff
+    style G2 fill:#000000,stroke:#333333,color:#ffffff
+    style H1 fill:#000000,stroke:#333333,color:#ffffff
+    style H2 fill:#000000,stroke:#333333,color:#ffffff
+    style H3 fill:#000000,stroke:#333333,color:#ffffff
 
 ## Screenshots
 
