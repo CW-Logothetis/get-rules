@@ -30,7 +30,16 @@ When the user invokes this rule, follow these steps:
        <!-- Please describe in detail how you tested your changes.-->
        <!-- Include details of your testing environment, and the tests you ran to-->
 
-5. **Add Mandatory sections**
+5.  **Create Architecture Diagram**
+    -   Based on the file paths in the `git diff`, identify the key components that were changed and their relationships. Put the names on one line, then in parenthesis on a new line, describe the file in very few words.
+    -   Create a Mermaid `graph TD` diagram to visualize these components.
+    -   **Important Styling Rules:** Use the following styles for the diagram to ensure clarity and consistency in both light and dark modes:
+        -   **All Nodes:** Use black backgrounds (`fill:#000000`), a `1px` border (`stroke-width:1px`), and rounded corners (`rx:5,ry:5`).
+        -   **Unchanged Components:** Use white text (`color:#ffffff`) and a gray border (`stroke:#666666`).
+        -   **Changed Components (from git diff):** Use light green text (`color:#90EE90`) and a light green border (`stroke:#90EE90`) to highlight them.
+    -   Add the complete diagram markdown to the MR description under a `## Component Architecture Diagram` section.
+
+6. **Add Mandatory sections**
     ```
     ## Screenshots
 
