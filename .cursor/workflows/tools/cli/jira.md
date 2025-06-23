@@ -1,5 +1,7 @@
 # Jira CLI – Cursor Rules & Usage
 
+Your Task: When you need to view or edit anything in Jira, use the Jira command-line tool. Adhere strictly to the default behaviors specified below unless explicitly overridden by the user or task requirements.
+
 ## Main Commands
 
 ### Issue
