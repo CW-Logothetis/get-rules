@@ -1,0 +1,37 @@
+---
+description:
+globs: src/**/*.test.ts,src/**/*.test.tsx
+alwaysApply: false
+---
+
+# Testing Utilities Standards
+
+## Inform the user
+- **Notification:** Always start answers about test files with "Tests with testing-utilities rules:"
+
+## Render Pattern
+- **Use createRender:** Always use `createRender` from `@/__test-utils__/__helpers__/createRender` instead of direct `render` from testing library e.g. `const render = createRender(['Theme', 'Redux'])`. Check the order that the providers need adding to the array.
+- **Destructure screen methods:** Always destructure methods from the render result, e.g. `const { getByText, getByRole } = render()`, so you do `expect(getByRole)` and not `expect(screen.getByRole)`
+- **No screen import:** Do not import 'screen' because you will destructure screen methods.
+
+## Required Helpers
+Use utilities from `@/__test-utils__/__helpers__/` including:
+
+- **autoFakeApollo:** Use `autoFakeApollo` when GraphQL mocking is needed
+- **apollo mocked provider:** Use apollo provider when mocked provider is needed  
+- **userActions:** Use `userActions` helpers for user interaction testing
+- **Other helpers:** Leverage sleep, waitForStateUpdate, renderFormWrapper as needed
+
+## RegEx
+- **RegEx for text:** better to use regex to select parts of text in any case rather than checking whole sentences. It is less brittle.
+
+## Example Pattern
+```tsx
+import { createRender } from '@/__test-utils__/__helpers__/createRender';
+import { autoFakeApollo } from '@/__test-utils__/__helpers__/autoFakeApollo';
+import { fireEvent } from '@/__test-utils__/__helpers__/userActions';
+
+const { getByText, getByRole } = createRender(<Component />);
+```
+
+**REMEMBER: Always use createRender, destructure screen methods, and leverage the helper utilities in @/__test-utils__/__helpers__ for consistent testing patterns.** 
