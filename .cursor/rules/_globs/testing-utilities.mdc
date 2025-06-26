@@ -7,20 +7,40 @@ alwaysApply: false
 # Testing Utilities Standards
 
 ## Inform the user
-- **Notification:** Always start answers about test files with "Tests with testing-utilities rules:"
+- **Notification:** Always start answers about `.test.` files with "Rules compliant:"
 
 ## Render Pattern
-- **Use createRender:** Always use `createRender` from `@/__test-utils__/__helpers__/createRender` instead of direct `render` from testing library e.g. `const render = createRender(['Theme', 'Redux'])`. Check the order that the providers need adding to the array.
-- **Destructure screen methods:** Always destructure methods from the render result, e.g. `const { getByText, getByRole } = render()`, so you do `expect(getByRole)` and not `expect(screen.getByRole)`
-- **No screen import:** Do not import 'screen' because you will destructure screen methods.
+- **Use createRender:** Always use `createRender` from `@/__test-utils__/__helpers__/createRender` instead of direct `render` e.g. `const render = createRender(['Theme', 'Redux'])`. Check the order that the providers need adding to the array.
+- **Destructure screen methods:** Always destructure methods from the render result, e.g. `const { getByText, getByRole } = render()`, so you do `expect(getByRole)` and not `expect(screen.getByRole)`.
 
 ## Required Helpers
 Use utilities from `@/__test-utils__/__helpers__/` including:
 
-- **autoFakeApollo:** Use `autoFakeApollo` when GraphQL mocking is needed
-- **apollo mocked provider:** Use apollo provider when mocked provider is needed  
+- **autoFakeApollo:** Use `autoFakeApollo` in createRender OR in tests when GraphQL mocking is needed
+- **apollo's MockedProvider:** Use `apollo` in createRender provider when mocked provider is needed  
 - **userActions:** Use `userActions` helpers for user interaction testing
-- **Other helpers:** Leverage sleep, waitForStateUpdate, renderFormWrapper as needed
+
+## Jest Mock, not require()
+- **require():** do NOT use require()
+- **mock and import:** - instead of require() you should follow this pattern: 
+```jest.mock('pages/experts/ExpertResultItem/hooks/useExpertSelectedProfile', () => ({
+  useExpertSelectedProfile: jest.fn(),
+}));
+```
+
+// Then import normally
+import { useExpertSelectedProfile } from 'pages/experts/ExpertResultItem/hooks/useExpertSelectedProfile';
+
+// In tests, cast to jest.Mock
+(useExpertSelectedProfile as jest.Mock).mockReturnValue({...});
+
+
+## React Testing Library
+- **RTL Principles:** you must follow the RTL principles from the official docs and blogs of Kent C. Dodds. For example:
+1. we are testing what the user will see and experience
+2. we use data-testid as a last resort
+3. we do **NOT** test CSS unless essential - check with the user first
+4. we do **NOT** use MUI data-testid because they could lead to brittle tests.
 
 ## RegEx
 - **RegEx for text:** better to use regex to select parts of text in any case rather than checking whole sentences. It is less brittle.
