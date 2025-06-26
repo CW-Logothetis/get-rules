@@ -10,11 +10,11 @@ alwaysApply: false
 - **Notification:** Always start answers about `.test.` files with "Rules compliant:"
 
 ## Render Pattern
-- **Use createRender:** Always use `createRender` from `@/__test-utils__/__helpers__/createRender` instead of direct `render` e.g. `const render = createRender(['Theme', 'Redux'])`. Check the order that the providers need adding to the array.
+- **Use createRender:** Always use `createRender` and import from `__test-utils__` instead of direct `render` e.g. `const render = createRender(['Theme', 'Redux'])`. Check the order that the providers need adding to the array.
 - **Destructure screen methods:** Always destructure methods from the render result, e.g. `const { getByText, getByRole } = render()`, so you do `expect(getByRole)` and not `expect(screen.getByRole)`.
 
 ## Required Helpers
-Use utilities from `@/__test-utils__/__helpers__/` including:
+Use utilities from `__test-utils__` including:
 
 - **autoFakeApollo:** Use `autoFakeApollo` in createRender OR in tests when GraphQL mocking is needed
 - **apollo's MockedProvider:** Use `apollo` in createRender provider when mocked provider is needed  
@@ -47,11 +47,14 @@ import { useExpertSelectedProfile } from 'pages/experts/ExpertResultItem/hooks/u
 
 ## Example Pattern
 ```tsx
-import { createRender } from '@/__test-utils__/__helpers__/createRender';
-import { autoFakeApollo } from '@/__test-utils__/__helpers__/autoFakeApollo';
-import { fireEvent } from '@/__test-utils__/__helpers__/userActions';
+import { createRender } from '__test-utils__';
+import { autoFakeApollo } from '__test-utils__/__helpers__/autoFakeApollo';
+import { fireEvent } from '/__test-utils__/__helpers__/userActions';
+
+import { GetSomething } from 'graphql/mutations/GetSomethig.operation';
 
 const { getByText, getByRole } = createRender(<Component />);
 ```
 
 **REMEMBER: Always use createRender, destructure screen methods, and leverage the helper utilities in @/__test-utils__/__helpers__ for consistent testing patterns.** 
+
