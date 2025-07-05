@@ -47,11 +47,18 @@ import { useExpertSelectedProfile } from 'pages/experts/ExpertResultItem/hooks/u
 
 ## Example Pattern
 ```tsx
-import { createRender } from '__test-utils__';
-import { autoFakeApollo } from '__test-utils__/__helpers__/autoFakeApollo';
-import { fireEvent } from '/__test-utils__/__helpers__/userActions';
+import React from 'react';
+import { MemoryRouter, Route } from 'react-router-dom';
 
-import { GetSomething } from 'graphql/mutations/GetSomethig.operation';
+import { createRender, ueclick, waitFor } from '__test-utils__';
+import { AutoFakeApollo } from '__test-utils__/__helpers__/autoFakeApollo/autoFakeApollo';
+import { ExpertFinderSubsearchStatus } from 'graphql/base-types';
+import { GetProjectExpertFinderCompanyTabsDocument } from 'graphql/queries/projects/project-tabs/projectExpertFinderCompanyTabs.operation';
+import { LayoutContext } from 'layouts/Maven/LayoutContext';
+import { ProjectViewContext } from 'pages/project-view/ProjectViewContext';
+import { useExpertFinderNavigation } from 'pages/project-view/tabs/expertFinder/hooks/useExpertFinderNavigation';
+import { Resource } from 'services/authorisation/accessRights/resources';
+import { ProtectedAreaProvider } from 'services/authorisation/ProtectedAreaProvider';
 
 const { getByText, getByRole } = createRender(<Component />);
 ```
