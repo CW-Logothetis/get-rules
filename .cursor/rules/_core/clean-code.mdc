@@ -35,7 +35,7 @@ This document outlines key principles from Robert C. Martin's "Clean Code," with
 -   **G34 - Functions Should Descend Only One Level of Abstraction:** Code within a function should be at a consistent level of abstraction.
     -   *Bad:* A function mixing high-level logic with low-level string manipulation.
     -   *Good:* The function calls other, lower-level functions to handle the details.
--   **F1 - Too Many Arguments:** Aim for zero to two arguments.
+-   **F1 - Too Many Arguments:** Aim for zero to three arguments.
     -   *Bad:* `createUser(username, password, email, age, address, phone)`
     -   *Good:* `createUser(userDetails)` where `userDetails` is an object.
 -   **F2 - Output Arguments:** Avoid them. A function should change its own object's state or return a new value.
