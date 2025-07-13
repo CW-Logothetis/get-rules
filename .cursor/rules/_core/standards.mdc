@@ -1,4 +1,4 @@
-o---
+---
 description:
 globs: 
 alwaysApply: true
@@ -34,3 +34,13 @@ alwaysApply: true
 - **Default:** Use `yarn` unless explicitly specified otherwise.
 
 **REMEMBER: Always use yarn as the default package manager for all operations.**
+
+description:
+globs: 
+alwaysApply: true
+---
+# Theme
+- Smoothie is our custom wrapper around MUI components. We have renamed MUI components like `Dialog` to `Modal`.
+- **Use Smoothie over MUI:** we no longer use MUI. Only old code can use MUI. All MUI components should be imported from Smoothie.
+
+**REMEMBER: Always use Smoothie for new code.**
