@@ -7,7 +7,7 @@ alwaysApply: false
 # Testing Utilities Standards
 
 ## Inform the user
-- **Notification:** Always start answers about `.test.` files with "Rules compliant:"
+- **Notification:** Always start answers about `.test.` files with "Compling with Test Rules:"
 
 ## Render Pattern
 - **Use createRender:** Always use `createRender` and import from `__test-utils__` instead of direct `render` e.g. `const render = createRender(['Theme', 'Redux'])`. Check the order that the providers need adding to the array.
