@@ -21,6 +21,7 @@ alwaysApply: true
 - **Execution:** Always run tests in single-run mode (no watch mode).
 - **Yarn:** Our test run with `yarn test`.
 - **Failure:** Prefer to fail-fast (e.g., "bail=1" or equivalent).
+- **No require():** do not use the require method.
 
 **REMEMBER: Run tests in single-run mode and configure them to fail fast on first error.**---
 
