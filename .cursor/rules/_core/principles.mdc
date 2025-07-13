@@ -5,11 +5,12 @@ alwaysApply: true
 ---
 # Guiding Principles
 
-1. **We do test-driven development:** 1. write a red failing test; THEN 2. write the code and run tests until you have a green passing test; THEN 3. refactor code if needed. Commit, then move to the next test.
-2. **Micro-Milestones:** We do TDD. So you must perform work in micro-commit-sized chunks. Explain what you did in the commit message. Optimize for easy rewinding. 
+1. **We do test-driven development:** i. write a red failing test - *MICRO-COMMIT IT*; THEN ii. write the code and run tests until you have a green passing test - *MICRO-COMMIT IT*; THEN iii. refactor code if needed, following @clean-code.mdc. *Commit it*, then move to the next test.
+2. **Micro-Milestones:** We **must** perform work in micro-commit-sized chunks. Explain what you did in each commit message. Optimize for easy rewinding. 
 3. **Observability:** Add excessive logging whilst working on a task.
 4. **Many Small Files:** ALWAYS prefer creating new files over adding to existing ones. 
-5. **Human-readable over DRY:** we want DRY code, but not at the expense of it being human-readable.
-6. **Use JSDocs:** for new code that you write.
+5. **Uncle Bob's Clean Code:** We write Clean Code.
+6. **Human-readable over DRY:** Our Clean Code must be human-readable.
+7. **Use JSDocs:** for new code that you write.
 
-**REMEMBER: TDD. Make everything observable. Keep files small and focused. Work in reversible increments. And write tests before code.**
+**REMEMBER: Make everything observable. Keep files small and focused. Work in reversible increments. TDD - write tests before code.**
