@@ -1,0 +1,186 @@
+# Import Rules Summary
+
+Based on my deep analysis of your codebase, here are the import rules and patterns I've identified:
+
+## 1. Path Resolution Configuration
+
+- **Base URL**: `tsconfig.json` sets `"baseUrl": "src"` - this enables absolute imports from the `src` directory
+- **Webpack**: Configured to resolve modules from `src` directory without needing the `src/` prefix
+- **ESLint**: Import resolver configured for TypeScript with paths starting from `src`
+
+## 2. Import Path Patterns
+
+### External/Node Modules (Standard)
+```typescript
+import { Box, Typography } from '@dev-team/smoothie-core';
+import React from 'react';
+import moment from 'moment';
+import debounce from 'lodash/debounce';
+```
+
+### Absolute Imports from src (Primary Pattern)
+```typescript
+// From utils directory
+import { makeSxStyles } from 'utils/makeSxStyles';
+import { DateFormats } from 'utils/dateFormats';
+import { useErrorHandlers } from 'utils/error-handlers';
+
+// From contracts directory  
+import type { AuthResponse } from 'contracts/auth';
+import type { MavenError } from 'contracts/notifications';
+import type { ExpertSearchState } from 'contracts/experts';
+
+// From components directory
+import { AsyncPage } from 'components/AsyncPage';
+import { InfiniteScrollView } from 'components/InfiniteScrollView/InfiniteScrollView';
+import Form from 'components/form/Form/Form';
+
+// From graphql directory
+import { useGetCompanyInfoLazyQuery } from 'graphql/queries/companiesInfo/companyInfo.operation';
+import type { Employee } from 'graphql/base-types';
+import { ExperienceStatus } from 'graphql/base-types';
+
+// From store directory
+import useNotificationActions from 'store/action-creators/notifications';
+import { useAppState } from 'store/store';
+import type { CompanySearchState } from 'store/slices/companies-search';
+
+// From pages directory
+import { CompanyBrief } from 'pages/companies/components/CompanyBrief/CompanyBrief';
+import { useCompaniesSearchState } from 'pages/companies/hooks/useCompaniesSearchState';
+```
+
+### Relative Imports (For Same/Parent Directories)
+**Same folder only:** We only allow relative imports from the same folder:
+```typescript
+// Same folder
+import { classes } from './CompanySearchInput.styles';
+import { CompanyBrief } from './CompanyBrief';
+```
+
+** DO NOT** use relative imports from parent folders or multiple levels up.
+
+## 3. Key Rules
+
+1. **Never include `src/` prefix** - The baseUrl configuration handles this
+2. **Never include file extensions** - Webpack/TypeScript handles `.ts`, `.tsx`, `.js`, `.jsx` resolution
+3. **Prefer absolute imports** over relative when importing from different feature areas
+4. **Only use relative imports** for files in the same directory
+5. **Import order** (enforced by ESLint):
+   - Node modules (external)
+   - Internal absolute imports
+   - Relative imports
+   - Alphabetical within each group
+  
+## 4. Default Export Rule
+
+**⚠️ AVOID DEFAULT EXPORTS**
+
+While the codebase currently contains default exports, the preferred pattern is to use named exports:
+
+```typescript
+// ❌ Avoid this
+export default function MyComponent() { ... }
+
+// ✅ Prefer this  
+export function MyComponent() { ... }
+export { MyComponent };
+```
+
+**Benefits of named exports:**
+- Better IDE support and auto-completion
+- Easier refactoring and renaming
+- More explicit dependencies
+- Better tree-shaking potential
+- Consistent import patterns
+
+## 5. Test File Import Patterns
+
+Test files follow specific patterns for importing utilities and helpers:
+
+### Test Utilities from `__test-utils__`
+```typescript
+// Basic test utilities
+import { reduxWrapper, renderHook } from '__test-utils__';
+import { createRender, screen, fireEvent, waitFor } from '__test-utils__';
+import { act, render, ueclick } from '__test-utils__';
+
+// User interaction helpers
+import { userEvent } from '__test-utils__';
+```
+
+### Test Helpers from `__test-utils__/__helpers__/`
+```typescript
+// Render helpers
+import { createRender } from '__test-utils__/__helpers__/createRender/createRender';
+import { reduxWrapper } from '__test-utils__/__helpers__/reduxWrapper';
+
+// User action helpers
+import { autocompleteSelectOption } from '__test-utils__/__helpers__/userActions/autocompleteSelectOption';
+import { typeText } from '__test-utils__/__helpers__/userActions/typeText';
+import { hoverElement } from '__test-utils__/__helpers__/userActions/hoverElement';
+import { getCombBoxInput } from '__test-utils__/__helpers__/userActions/getComboboxInput';
+
+// Testing utilities
+import { AutoFakeApollo } from '__test-utils__/__helpers__/autoFakeApollo/autoFakeApollo';
+```
+
+### Factory Functions from `__test-utils__/__factories__/`
+```typescript
+// Data factories for testing
+import companyInfoFactory from '__test-utils__/__factories__/companyInfo';
+import experienceFactory from '__test-utils__/__factories__/experience';
+import createExpertFactory from '__test-utils__/__factories__/expert';
+import { emailTemplateFactory } from '__test-utils__/__factories__/perspective';
+```
+
+### External Testing Libraries
+```typescript
+// Apollo Testing
+import { MockedProvider } from '@apollo/client/testing';
+import type { MockedResponse } from '@apollo/client/testing';
+
+// Redux Testing
+import configureMockStore from 'redux-mock-store';
+import type { MockStore, MockStoreEnhanced } from 'redux-mock-store';
+```
+
+### Mock Patterns in Tests
+```typescript
+// Mock modules at the top of test files
+jest.mock('utils/exchange-authorization-code', () => ({
+  exchangeAuthorizationCode: jest.fn(() => Promise.resolve('mock-token')),
+}));
+
+// Import mocked modules normally
+import { exchangeAuthorizationCode } from 'utils/exchange-authorization-code';
+
+// Cast to jest.Mock when needed
+(exchangeAuthorizationCode as jest.Mock).mockReturnValue('mock-result');
+```
+
+### Complete Test File Example
+```typescript
+import type { MockedResponse } from '@apollo/client/testing';
+import { MockedProvider } from '@apollo/client/testing';
+
+import { createRender, fireEvent, waitFor } from '__test-utils__';
+import { AutoFakeApollo } from '__test-utils__/__helpers__/autoFakeApollo/autoFakeApollo';
+import { typeText } from '__test-utils__/__helpers__/userActions/typeText';
+import companyInfoFactory from '__test-utils__/__factories__/companyInfo';
+import type { AuthResponse } from 'contracts/auth';
+import { useGetCompanyInfoLazyQuery } from 'graphql/queries/companiesInfo/companyInfo.operation';
+import { CompanyBrief } from 'pages/companies/components/CompanyBrief/CompanyBrief';
+
+// Component-specific imports
+import { ComponentUnderTest } from './ComponentUnderTest';
+```
+
+## 5. Import Resolution Benefits
+
+- **Clean paths**: No need for `../../../../` chains
+- **Refactoring-friendly**: Moving files doesn't break absolute imports
+- **IDE support**: Better autocomplete and navigation
+- **Consistent**: Same import pattern regardless of file location
+
+This configuration allows you to import from any directory under `src` using clean, absolute paths while maintaining the flexibility to use relative imports for closely related files.
