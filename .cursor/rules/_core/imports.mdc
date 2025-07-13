@@ -1,3 +1,7 @@
+---
+alwaysApply: true
+---
+
 # Import Rules Summary
 
 Based on my deep analysis of your codebase, here are the import rules and patterns I've identified:
