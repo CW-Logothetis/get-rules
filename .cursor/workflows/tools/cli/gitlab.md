@@ -1,4 +1,8 @@
-# Core GitLab CLI Commands
+# Gitlab CLI – Cursor Rules & Usage
+
+Your Task: When you need to read or write anything in Gitlab, use the Gitlab command-line tool. Adhere strictly to the default behaviors specified below unless explicitly overridden by the user or task requirements.
+
+## Core GitLab CLI Commands
 
 Run `glab --help` to view a list of core commands in your terminal.
 
