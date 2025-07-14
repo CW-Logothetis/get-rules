@@ -52,7 +52,7 @@ Use this information before running the remaining steps.
     - **Execute:** Run the Gitlab command to create the MR with your prepared options.
     - **Review `glab` Output:** Carefully check the preview of the title and body provided by `glab` before final submission. Ensure it is accurate, clear, and complete.
 
-**Example `gh pr create` command:**
+**Example Gitlab create MR command:**
 
 ```bash
 # Ensure branch is pushed first: git push -u origin fix-label-sanitization
