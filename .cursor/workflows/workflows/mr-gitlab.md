@@ -31,6 +31,10 @@ Use this information before running the remaining steps.
         - For untracked files, ensure they are now ignored or delete them if they are genuinely extraneous.
     - **Final Confirmation:** Run `git status` one last time. Verify that *only* the intended and appropriate files remain staged.
 
+2.  **Check Jira ticket and Git Diffs**
+   - **Read the Jira ticket:** Use the Jira CLI to read the ticket again (you should have done this at the start, but if not, the ticket number is in the branch name as 'MAV-#####'
+   - **Examine git diffs:** Run git diff against the branch you must merge into and the local branch you are working on. Review the changes against the JIRA ticket description.  
+
 2.  **Draft Merge Request Body**
     - **Create/Update MR Body File:** Prepare the MR description in a file named `docs/mr/mr-body-file-<branch-name>.md` (replace `<branch-name>` with your current Git branch name).
     - **Structure for Clarity:** Use Markdown with clear headings from the appropriate template (see next point below).
