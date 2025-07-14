@@ -2,6 +2,8 @@
 
 **Your Task: Follow this comprehensive checklist to prepare and create a well-documented, clean, and accurate Merge Request (mR) using Gitlab's `glab` CLI.**
 
+You can find `glab` commands here @.cursor/workflows/tools/cli/gitlab.md - refer to these if you get any errors in the terminal for commans that you read here or try off your own back.
+
 ## File Existence Check
 
 Confirm the presence of `.gitignore` and the MR body file location:
