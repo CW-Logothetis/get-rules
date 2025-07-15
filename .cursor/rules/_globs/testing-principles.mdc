@@ -41,6 +41,7 @@ import { useExpertSelectedProfile } from 'pages/experts/ExpertResultItem/hooks/u
 2. we use data-testid as a last resort
 3. we do **NOT** test CSS unless essential - check with the user first
 4. we do **NOT** use MUI data-testid because they could lead to brittle tests.
+5. prefer `.not.toBeInTheDocument()` over `toBeNull`.
 
 ## RegEx
 - **RegEx for text:** better to use regex to select parts of text in any case rather than checking whole sentences. It is less brittle.
