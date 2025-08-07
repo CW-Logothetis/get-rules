@@ -46,6 +46,9 @@ import { useExpertSelectedProfile } from 'pages/experts/ExpertResultItem/hooks/u
 ## RegEx
 - **RegEx for text:** better to use regex to select parts of text in any case rather than checking whole sentences. It is less brittle.
 
+## Test descriptions
+- **Start with a verb:** e.g. `it(handles...`, `it(opens...). Do NOT use should like `it(should...)`
+
 ## Example Pattern
 ```tsx
 import React from 'react';
