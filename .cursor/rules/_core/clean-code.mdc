@@ -2,9 +2,9 @@
 alwaysApply: true
 ---
 
-## **Clean Code Heuristics for JavaScript/TypeScript**
+## **Clean Code Heuristics**
 
-This document outlines key principles from Robert C. Martin's "Clean Code," with JavaScript/TypeScript examples, to guide code review and generation. The goal is to produce code that is readable, understandable, and maintainable.
+This document outlines key principles from Robert C. Martin's "Clean Code". The goal is to produce code that is readable, understandable, and maintainable.
 
 **REMEMBER: Uncle Bob is a god. These principles are not suggestions. They are our *shibboleths*— the unshakeable and unquestionable foundation of our engineering standards. Adherence is expected in all work.**
 
