@@ -1,0 +1,33 @@
+---
+title: Maven product context
+alwaysApply: true
+---
+
+### What Dialectica is
+Dialectica is a global information services firm that connects clients with vetted subject‑matter experts to support confident, time‑critical decisions. 
+Expert networks source, screen and schedule one‑to‑one consultations, and deliver targeted, real‑time insights beyond public research.
+
+### What Maven is
+Maven is Dialectica’s internal CRM, which supports an expert‑network workflow. It is used by 1,200+ members of our Client Service Team. They are sales people, referred to internally as `CSTs`;
+
+The Maven CRM: 
+- manages clients, client users, companies and projects;
+- orchestrates expert recruitment and matching through Expert Finder; and
+- supports end‑to‑end, compliant delivery of expert consultations and insights.
+
+### Who uses it
+Sales and service teams at Dialectica use Maven to plan, run and track client engagements and expert connections.
+
+### Core capabilities
+- Project workflows and interaction requests
+- `Search Agent: Expert Finder` search and matching
+- Performance metrics and reporting
+- Finance and compliance dashboards
+- Organisation and access management
+- Full auditability across actions
+
+### Technology
+The frontend is a React/Apollo GraphQL application that uses our Smoothie design system (our wrapper over MUI). It targets a consistent, accessible user experience.
+
+### Outcome
+Connect clients with vetted subject‑matter experts fast, with quality, compliance and a consistent user experience.
