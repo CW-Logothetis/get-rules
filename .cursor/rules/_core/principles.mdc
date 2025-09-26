@@ -5,8 +5,8 @@ alwaysApply: true
 ---
 # Guiding Principles
 
-1. **We do test-driven development:** i. write a red failing test - *MICRO-COMMIT IT*; THEN ii. write the code and run tests until you have a green passing test - *MICRO-COMMIT IT*; THEN iii. refactor code if needed, following @clean-code.mdc. *Commit it*, then move to the next test.
-2. **Micro-Milestones:** We **must** perform work in micro-commit-sized chunks. Explain what you did in each commit message. Optimize for easy rewinding. 
+1. **We do test-driven development:** i. write a red failing test; THEN ii. write the code and run tests until you have a green passing test; THEN iii. refactor code if needed, following @clean-code.mdc. *Commit it*, then move to the next test.
+2. **Micro-Milestones:** We **must** perform work in small, commit-sized chunks. Explain what you did in each commit message. Optimize for easy rewinding. 
 3. **Observability:** Add excessive logging whilst working on a task.
 4. **Many Small Files:** ALWAYS prefer creating new files over adding to existing ones. 
 5. **Uncle Bob's Clean Code:** We write Clean Code.
