@@ -6,15 +6,13 @@
 
 When invoking `repomix`, you **MUST** apply the following options by default:
 
-1. **Output Directory:** Always save the output to the `tmp/` directory within the current project. Use the `-o` flag. Example: `-o tmp/packed-output.md` (replace `packed-output.md` with a descriptive filename).
-2.  **Ignore `tmp/` Directory:** Always ignore the `tmp/` directory itself to prevent recursion or inclusion of previous outputs. Add `tmp/` to ignore patterns. Example: `--ignore "tmp/,**/.DS_Store"`.
-3.  **Ignore `.cursor/rules/` Directory:** Always ignore the `.cursor/rules/` directory. Example: `--ignore "tmp/,**/.DS_Store,.cursor/rules/"`.
-4.  **Include Token Count:** Always include a token count in the output. Use `--token-count-encoding o200k_base`.
-5.  **No Line Numbers:** Never include line numbers in the output. **DO NOT** use the `--output-show-line-numbers` flag.
-6.  **Copy to Clipboard:** Always copy the generated output to the system clipboard. Use the `--copy` flag.
+1. **Output Directory:** Always save the output to the `.cursor/rules/_/context/docs-local/<ticket number>` directory within the current project, where ticket number will look like `MAV-12345`. Use the `-o` flag. Example: `-o .cursor/rules/_/context/docs-local/<ticket number>/packed-output.md` (replace `packed-output.md` with a descriptive filename).
+2. **Ignore `.cursor/rules/` Directory:** Always ignore the `.cursor/rules/` directory. Example: `--ignore ".cursor/,**/.DS_Store,.cursor/rules/"`.
+3. **Include Token Count:** Always include a token count in the output. Use `--token-count-encoding o200k_base`.
+4. **No Line Numbers:** Never include line numbers in the output. **DO NOT** use the `--output-show-line-numbers` flag.
 
 **Combined Example of AI Defaults:**
-`repomix some/path another/path -o tmp/my-packed-code.md --ignore "tmp/,**/.DS_Store,.cursor/rules/" --token-count-encoding o200k_base --copy`
+`repomix some/path another/path -o .cursor/rules/_/context/docs-local/<ticket number>/my-packed-code.md --ignore ".cursor/rules/_/context/docs-local/<ticket number>/,**/.DS_Store,.cursor/rules/" --token-count-encoding o200k_base --copy`
 
 ## II. `repomix` Command Reference
 
@@ -22,12 +20,14 @@ Usage: `repomix [options] [directories...]`
 
 description:
 
-### Arguments:
+### Arguments
+
   `directories`                        List of directories to process (default: current directory `["."]`)
 
-### Options:
+### Options
+
   `-v, --version`                      Show version information
-  `-o, --output <file>`                Specify the output file name (AI Default: `tmp/<filename>`)
+  `-o, --output <file>`                Specify the output file name (AI Default: `docs-local/<ticket-number>/<filename>`)
   `--style <type>`                     Specify the output style (`xml`, `markdown`, `plain`). Default: `plain`.
   `--parsable-style`                   Ensure output is parsable as its type (e.g., valid XML if `--style xml`).
   `--compress`                         Perform code compression to reduce token count.
@@ -78,8 +78,8 @@ description:
 
 ## IV. Post-Processing: Token Count Management
 
-1.  **Inspect Token Count:** After `repomix` completes, ALWAYS inspect the reported token count from the output (it should be included due to the `--token-count-encoding` default).
-2.  **Address High Token Counts (e.g., > 500,000, adjust as needed for target LLM):**
+1. **Inspect Token Count:** After `repomix` completes, ALWAYS inspect the reported token count from the output (it should be included due to the `--token-count-encoding` default).
+2. **Address High Token Counts (e.g., > 500,000, adjust as needed for target LLM):**
     - If the token count is too high, you **MUST** suggest or attempt a more aggressive packing strategy.
     - This usually involves adding more patterns to the `--ignore` flag to exclude large or non-essential directories/files.
     - **Example Remediation Command:**
