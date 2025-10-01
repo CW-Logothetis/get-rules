@@ -3,7 +3,7 @@ description:
 globs: 
 alwaysApply: true
 ---
-# Git Practices
+## Git Practices
 
 - **Conventional Commit Messages:** ALWAYS use `fix:`, `feat:`, `refactor:`, `test:`, or `chore:` prefixes.
 - **Verification:** NEVER use `--no-verify` or bypass pre-commit hooks.
@@ -12,11 +12,7 @@ alwaysApply: true
 
 **REMEMBER: Use semantic commit prefixes, respect pre-commit hooks, ensure tests pass before pushing, and avoid interactive git commands.**---
 
-description:
-globs: 
-alwaysApply: true
----
-# Testing Standards
+## Testing Standards
 
 - **Execution:** Always run tests in single-run mode (no watch mode).
 - **Yarn:** Our test run with `yarn test`.
@@ -25,22 +21,20 @@ alwaysApply: true
 
 **REMEMBER: Run tests in single-run mode and configure them to fail fast on first error.**---
 
-description:
-globs: 
-alwaysApply: true
----
-# Package Managers
+## Package Managers
 
 - **Default:** Use `yarn` unless explicitly specified otherwise.
 
 **REMEMBER: Always use yarn as the default package manager for all operations.**
 
-description:
-globs: 
-alwaysApply: true
----
-# Theme
+## Theme
 - Smoothie is our custom wrapper around MUI components. We have renamed MUI components like `Dialog` to `Modal`.
 - **Use Smoothie over MUI:** we no longer use MUI. Only old code can use MUI. All MUI components should be imported from Smoothie.
 
 **REMEMBER: Always use Smoothie for new code.**
+
+## Apollo GraphQL Schema Codegen
+
+Never run `yarn generate` without permission. Never. It crashes the IDE.
+
+**REMEMBER: Never run `yarn generate` without permission.**
