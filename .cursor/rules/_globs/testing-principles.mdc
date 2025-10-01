@@ -7,7 +7,7 @@ alwaysApply: false
 
 ## Inform the user
 
-- **Notification:** Always start answers about `.test.` files with "Compling with Test Rules:"
+- **Notification:** Always start answers about test files, e.g. that match `**/*.test.ts,**/*.test.tsx`, with "Compling with Test Rules:"
 
 ## Render Pattern
 
@@ -54,7 +54,7 @@ import { useExpertSelectedProfile } from 'pages/experts/ExpertResultItem/hooks/u
 
 ## Test descriptions
 
-- **Start with a verb:** e.g. `it(handles...`, `it(opens...). Do NOT use should like`it(should...)`
+- **Start with a verb:** e.g. `it(handles...`, `it(opens...). Do NOT use "should" like `it(should...)`.
 
 ## Example Pattern
 
@@ -75,4 +75,4 @@ import { ProtectedAreaProvider } from 'services/authorisation/ProtectedAreaProvi
 const { getByText, getByRole } = createRender(<Component />);
 ```
 
-**REMEMBER: Always use createRender, destructure screen methods, and leverage the helper utilities in @/**test-utils**/**helpers** for consistent testing patterns.**
+**REMEMBER: Always use createRender, destructure screen methods, and leverage the helper utilities in @/**test-utils**/**helpers** for consistent testing patterns. Always follow Kent C. Dodds's best practice for testing the user experience with RTL**
