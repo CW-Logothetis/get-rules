@@ -1,6 +1,11 @@
 ---
-title: Maven product context
-alwaysApply: true
+name: Dialectica and Maven Product Context
+description: >-
+  Provides background context on Dialectica (the company) and Maven (the product).
+  Apply this rule if the prompt requires knowledge about:
+  - What we do, how we do it, and why we do it.
+  - Who our users are and what they do.
+alwaysApply: false
 ---
 
 ### What Dialectica is
