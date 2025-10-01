@@ -24,7 +24,7 @@ Use **only** the provided Jira ticket descriptions and the git diff for your ana
       5. React Best Practices - and first read @_globs/react/testing-principles.md
 
     - For each finding that you find in each title, provide a clear explanation, a code snippet, and a specific suggestion for improvement.
-    - Structure your output *exactly* as follows, using markdown format.
+    - An example report is below. List each discovery in the correct section. For example, if you find four typos, list them all in section 2. If you find 5 Typescript issues, list them all in   section 3.
 
    # AI Pre-MR Review Report
 
