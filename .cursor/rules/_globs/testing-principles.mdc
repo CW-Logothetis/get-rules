@@ -41,6 +41,7 @@ import { useExpertSelectedProfile } from 'pages/experts/ExpertResultItem/hooks/u
 ## Do not write code in tests
 
 - we do not want to write code in tests that then needs testing
+- we especially do not write React hooks in test implementations.
 - This is BAD:
 
 ```typescript
