@@ -38,6 +38,31 @@ import { useExpertSelectedProfile } from 'pages/experts/ExpertResultItem/hooks/u
 // In tests, cast to jest.Mock
 (useExpertSelectedProfile as jest.Mock).mockReturnValue({...});
 
+## Do not write code in tests
+
+- we do not want to write code in tests that then needs testing
+- This is BAD:
+
+```typescript
+    (useRefreshExpertContactDetails as jest.Mock).mockImplementation((expertId, onComplete, options) => {
+      // Simulate contact refresh completing successfully
+      if (options.shouldRefresh) {
+        React.useEffect(() => {
+          onComplete();
+        }, []);
+      }
+      return { hasError: false, isCompleted: true };
+    });
+```
+
+it should just return the mocked value:
+```typescript
+  (useRefreshExpertContactDetails as jest.Mock).mockReturnValue({
+      hasError: false,
+      isCompleted: true,
+    });
+```
+
 ## React Testing Library
 
 - **RTL Principles:** you must follow the RTL principles from the official docs and blogs of Kent C. Dodds. For example:
