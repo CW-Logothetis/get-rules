@@ -1,21 +1,17 @@
 # Before you memo
 
-There are many articles written about React performance optimizations. In general, if some state update is slow, you need to:
+Core Principle: Isolate State Changes
 
-- Verify that you didn’t put the state higher in the tree than necessary. (For example, putting input state in a centralized store might not be the best idea.)
-- Run React DevTools Profiler to see what gets re-rendered, and wrap the most expensive subtrees with memo(). (And add useMemo() where needed.)
+When a component's state updates, React re-renders the component and its entire subtree. If a part of that subtree is computationally expensive but does not depend on the changing state, this leads to performance issues. The solution is to refactor components to separate the parts that depend on state from the parts that don't.
 
-This last step is annoying, especially for components in between.
+Strategy 1: Move State Down
 
-Here are two different techniques. They’re surprisingly basic, which is why people rarely realize they improve rendering performance.
+This technique is applicable when state is held higher up in the component tree than necessary.
 
-These solutions are often goot to try first, but they do not replace memoization, they are complementary to memo or useMemo.
+    Problem: A parent component App holds state (e.g., color) that is only used by a few elements within it, but its state updates cause an unrelated <ExpensiveTree /> component to re-render.
+    JavaScript
 
-## An (Artificially) Slow Component
-Here’s a component with a severe rendering performance problem:
-```
-import { useState } from 'react';
- 
+// Problematic Structure
 export default function App() {
   let [color, setColor] = useState('red');
   return (
@@ -26,62 +22,40 @@ export default function App() {
     </div>
   );
 }
- 
-function ExpensiveTree() {
-  let now = performance.now();
-  while (performance.now() - now < 100) {
-    // Artificial delay -- do nothing for 100ms
-  }
-  return <p>I am a very slow component tree.</p>;
-}
-```
 
-The problem is that whenever color changes inside `App`, we will re-render `<ExpensiveTree />` which we’ve artificially delayed to be very slow.
+Solution: Extract the state and the elements that depend on it into a new, self-contained component (Form). The parent component (App) then renders this new component alongside the expensive one.
+JavaScript
 
-I could put `memo()` on it and call it a day, but there are many existing articles about it so I won’t spend time on it. I want to show two different solutions.
+    // Optimized Structure
+    export default function App() {
+      return (
+        <>
+          <Form />
+          <ExpensiveTree />
+        </>
+      );
+    }
 
-## Solution 1: Move State Down
-If you look at the rendering code closer, you’ll notice only a part of the returned tree actually cares about the current color:
+    function Form() {
+      let [color, setColor] = useState('red');
+      return (
+        <>
+          <input value={color} onChange={(e) => setColor(e.target.value)} />
+          <p style={{ color }}>Hello, world!</p>
+        </>
+      );
+    }
 
-```
-export default function App() {
-  let [color, setColor] = useState('red');
-  return (
-    <div>
-      <input value={color} onChange={(e) => setColor(e.target.value)} />
-      <p style={{ color }}>Hello, world!</p>
-      <ExpensiveTree />
-    </div>
-  );
-}
-```
-So let’s extract that part into a Form component and move state down into it:
-```
-export default function App() {
-  return (
-    <>
-      <Form />
-      <ExpensiveTree />
-    </>
-  );
-}
- 
-function Form() {
-  let [color, setColor] = useState('red');
-  return (
-    <>
-      <input value={color} onChange={(e) => setColor(e.target.value)} />
-      <p style={{ color }}>Hello, world!</p>
-    </>
-  );
-}
-```
+    Result: Now, when the color state changes, only the Form component re-renders. <ExpensiveTree /> is unaffected because its parent (App) does not re-render.
 
-Now if the color changes, only the Form re-renders. Problem solved.
+Strategy 2: Lift Content Up
 
-## Solution 2: Lift Content Up
-The above solution doesn’t work if the piece of state is used somewhere above the expensive tree. For example, let’s say we put the color on the parent <div>:
-```
+This technique is useful when a parent component must hold the state because it affects the parent's own rendering (e.g., styling a container div), but its children don't need to re-render.
+
+    Problem: The state (color) is used in the parent component's top-level element, so we can't simply move the state down. The state change still triggers a re-render of <ExpensiveTree />.
+    JavaScript
+
+// Problematic Structure
 export default function App() {
   let [color, setColor] = useState('red');
   return (
@@ -92,15 +66,11 @@ export default function App() {
     </div>
   );
 }
-```
 
+Solution: Split the component. Create a new component (ColorPicker) that manages the state and renders the elements dependent on it. The expensive, non-dependent components (<p> and <ExpensiveTree />) are passed from the parent as the children prop.
+JavaScript
 
-Now it seems like we can’t just “extract” the parts that don’t use color into another component, since that would include the parent `<div>`, which would then include `<ExpensiveTree />`. Can’t avoid memo this time, right?
-
-Or can we?
-
-The answer is remarkably plain:
-```
+// Optimized Structure
 export default function App() {
   return (
     <ColorPicker>
@@ -109,7 +79,7 @@ export default function App() {
     </ColorPicker>
   );
 }
- 
+
 function ColorPicker({ children }) {
   let [color, setColor] = useState("red");
   return (
@@ -119,23 +89,5 @@ function ColorPicker({ children }) {
     </div>
   );
 }
-```
 
-We split the App component in two. The parts that depend on the color, together with the color state variable itself, have moved into `ColorPicker`.
-
-The parts that don’t care about the color stayed in the `App` component and are passed to `ColorPicker` as JSX content, also known as the children prop.
-
-When the color changes, `ColorPicker` re-renders. But it still has the same children prop it got from the `App` last time, so React doesn’t visit that subtree.
-
-And as a result, `<ExpensiveTree />` doesn’t re-render.
-
-## What’s the moral?
-Before you apply optimizations like memo or useMemo, it might make sense to look if you can split the parts that change from the parts that don’t change.
-
-The interesting part about these approaches is that they don’t really have anything to do with performance, per se. Using the children prop to split up components usually makes the data flow of your application easier to follow and reduces the number of props plumbed down through the tree. Improved performance in cases like this is a cherry on top, not the end goal.
-
-Curiously, this pattern also unlocks more performance benefits in the future.
-
-Again, all approaches are complementary. Don’t neglect moving state down (and lifting content up!)
-
-Then, where it’s not enough, use the React Profiler and sprinkle those memo’s.
+Result: When the color changes, ColorPicker re-renders. However, from React's perspective, the children prop it receives from App is the same object as before. Therefore, React does not need to visit and re-render the children subtree, and <ExpensiveTree /> is skipped.
