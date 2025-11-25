@@ -1,7 +1,7 @@
 ---
-description: 
-globs: 
-alwaysApply: true
+description:
+globs:
+alwaysApply: false
 ---
 
 # Tech Stack
@@ -11,10 +11,11 @@ alwaysApply: true
 - **React and TypeScript:** We use version 18 of React with Typescript.
 - **API:** Apollo Client for GraphQL
 - **Version control:** Our front-end repo is in Gitlab and is called 'Falbala'. We merge to a `develop` branch, not main or master. **Do NOT attempt to checkout or push to a main or master branch.**
-- **Tests:** Jest and React Testing Library.
+- **Unit Tests:** Jest and React Testing Library.
+- **Front-end component tests:** Cypress.
 - **Jira:** All tickets are in the format MAV-##### where the hashes are numbers.
 - **UI Component Library:** a custom wrapper around MUI called 'Smoothie'. **For new components, we always import from Smoothie.**
 
 - **Any doubts about stack and version numbers?:** Check our package.json for a list of the libraries/packages we use and their version numbers.
-  
+
 **REMEMBER: Our main branch is called `develop`.**
