@@ -11,7 +11,7 @@ alwaysApply: false
 
 ## Render Pattern
 
-- **Use createRender:** Always use `createRender` and import from `__test-utils__` instead of direct `render` e.g. `const render = createRender(['Theme', 'Redux'])`. Check the order that the providers need adding to the array.
+- **Use createRender:** When wrapping the rendered component with Providers, consider using `createRender` and import from `__test-utils__` instead of direct `render` e.g. `const render = createRender(['Theme', 'Redux'])`. Check the order that the providers need adding to the array.
 - **Destructure screen methods:** Always destructure methods from the render result, e.g. `const { getByText, getByRole } = render()`, so you do `expect(getByRole)` and not `expect(screen.getByRole)`.
 
 ## Required Helpers
