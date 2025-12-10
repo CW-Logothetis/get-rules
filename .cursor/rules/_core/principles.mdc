@@ -12,6 +12,7 @@ alwaysApply: true
 5. **Uncle Bob's Clean Code:** We write Clean Code.
 6. **Human-readable over DRY:** Our Clean Code must be human-readable.
 7. **Use JSDocs:** for new code that you write.
+8. **No other comments should be added:** unless they are JSDocs above functions.
 8. **Testing:** if you are writing a test, read @_globs/testing-principles.mdc first
 
 **REMEMBER: Make everything observable. Keep files small and focused. Work in reversible increments. TDD - write tests before code.**
