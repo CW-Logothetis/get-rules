@@ -50,7 +50,7 @@ echo "✅ Spawned Unit Tests..."
 sleep 0.5
 
 # Cypress Component Test Best Practices
-cursor-agent -p --force "$STRICT_SCOPE If there are Cypress files in the diff, review $DIFF_FILE solely for Cypress Component Testing Best Practices (Selectors, interception, mounting). Write findings in bullet points and with short sentences to $OUTPUT_DIR/04_cypress.md" &
+cursor-agent -p --force "$STRICT_SCOPE If there are Cypress files in the diff, review $DIFF_FILE solely for Cypress Component Testing Best Practices (Selectors, interception, mounting). If there are no suitable selectors by role, name or label for a new element, check we added data-cy or data-testid. Write findings in bullet points and with short sentences to $OUTPUT_DIR/04_cypress.md" &
 echo "✅ Spawned Cypress..."
 sleep 0.5
 
