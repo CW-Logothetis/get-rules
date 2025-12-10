@@ -45,7 +45,7 @@ echo "✅ Spawned TypeScript..."
 sleep 0.5
 
 # Unit Test Best Practices
-cursor-agent -p --force "$STRICT_SCOPE If there are Unit Test files in the diff, review the Added Code in $DIFF_FILE solely for Unit Testing Best Practices (Jest, React Testing Library, Kent C. Dodds philosophy for testing, coverage, mocking logic, assertions). Write findings in bullet points and with short sentences to $OUTPUT_DIR/03_unit_tests.md" &
+cursor-agent -p --force "$STRICT_SCOPE If there are Unit Test files in the diff, review the Added Code in $DIFF_FILE solely for Unit Testing Best Practices (Jest, React Testing Library, Kent C. Dodds philosophy for testing, coverage, mocking logic, assertions). Read the logic of all the tests in a file against any new additions and ensure the test file as a whole makes sense and does not have duplication, which is a common occurance when engineers add new tests without reading the existing ones. Write findings in bullet points and with short sentences to $OUTPUT_DIR/03_unit_tests.md" &
 echo "✅ Spawned Unit Tests..."
 sleep 0.5
 
@@ -55,7 +55,7 @@ echo "✅ Spawned Cypress..."
 sleep 0.5
 
 # Uncle Bob's Clean Code
-cursor-agent -p --force "$STRICT_SCOPE Review the Added Code in $DIFF_FILE solely for 'Clean Code' principles by Uncle Bob (e.g Function size, naming conventions, structure and abstraction, clarity and intent, dependencies and coupling, SOLID principles, comments). Write findings in bullet points and with short sentences to $OUTPUT_DIR/05_clean_code.md" &
+cursor-agent -p --force "$STRICT_SCOPE Review the Added Code in $DIFF_FILE solely for 'Clean Code' principles by Uncle Bob (e.g Function size, naming conventions, structure and abstraction, clarity and intent, dependencies and coupling, SOLID principles, comments). Flag any TODO comments - existing or added. Write findings in bullet points and with short sentences to $OUTPUT_DIR/05_clean_code.md" &
 echo "✅ Spawned Clean Code..."
 sleep 0.5
 
