@@ -1,0 +1,217 @@
+---
+description: Guidelines for planning and writing Cypress integration tests
+globs: cypress/**/*
+alwaysApply: false
+---
+
+# Cypress Integration Testing Guide
+
+Use this rule when planning or creating Cypress tests. These are **integration tests against localhost**, not E2E tests against real backends. Internally, we call them 'component tests' and they are above unit tests in our pyramid. They are the final set of tests a front-end engineer does. Above these, SET do system and E2E tests.
+
+## Architecture Overview
+
+- **BDD Framework:** Cucumber via `@badeball/cypress-cucumber-preprocessor`
+- **Test files:** `.feature` (Gherkin) + `.js` (step definitions)
+- **Network:** All GraphQL calls intercepted — no real API hits
+- **Auth:** Impersonation login + mocked permissions
+
+## File Structure
+
+```
+cypress/
+├── e2e/                    # Tests organised by feature
+│   └── {feature}/
+│       ├── {test}.feature  # Gherkin scenarios
+│       └── {test}.js       # Step definitions
+├── support/
+│   ├── pages/              # Page Object Model
+│   │   └── app.js          # Root page object
+│   ├── step_definitions/   # Shared/global steps
+│   │   ├── global.js       # Before hooks, recording
+│   │   └── user.js         # Permission steps
+│   └── utils/
+│       ├── api.js          # Entry point: api.auth, api.graphql
+│       ├── api-auth.js     # Login + permission mocking
+│       ├── api-graphql.js  # GraphQL mock/request helpers
+│       └── api-recorder.js # Record/playback fixtures
+└── fixtures/
+    └── recordings/graphql/ # Recorded API responses (SHA-256 hashed filenames)
+```
+
+## Path Aliases (use in imports)
+
+```js
+import { api } from '@utils/api';
+import { app } from '@pages/app';
+```
+
+## Writing Tests
+
+### 1. Feature File (Gherkin)
+
+```gherkin
+Feature: Feature Name
+
+  Short description of what this feature does.
+
+  Scenario: User does something
+    Given some precondition
+    When I perform an action
+    Then I should see a result
+```
+
+### 2. Step Definitions
+
+```js
+import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
+import { app } from '@pages/app';
+import { api } from '@utils/api';
+
+Given('some precondition', () => {
+  // Setup mocks or state
+});
+
+When('I perform an action', () => {
+  app.someComponent.doSomething();
+});
+
+Then('I should see a result', () => {
+  cy.contains('Expected text');
+});
+```
+
+### 3. Page Objects
+
+Create new page objects in `cypress/support/pages/`. Follow existing patterns:
+
+```js
+class MyFeaturePage {
+  visit() {
+    cy.visit('/my-feature');
+  }
+
+  clickButton() {
+    cy.contains('Button Text').click();
+  }
+
+  assertVisible() {
+    cy.contains('Expected Content');
+  }
+}
+```
+
+Export from `app.js` or relevant parent page object.
+
+## Network Mocking
+
+### Option A: Use Recorded Fixtures (Default)
+
+Fixtures auto-play via `global.js` before hook. To record new fixtures:
+
+1. Tag feature: `@record-graphql`
+2. Or run: `cypress run --env record-graphql=true`
+
+### Option B: Manual Mocking
+
+```js
+// Mock by operation name - modify response
+api.graphql.mock('GetSomething', (req) => {
+  req.on('response', (res) => {
+    res.body.data.something.field = 'modified value';
+  });
+});
+
+// Mock by operation name - full replacement
+api.graphql.mock('GetSomething', (req) => {
+  req.reply({
+    statusCode: 200,
+    body: {
+      data: { something: { field: 'value' } },
+      errors: [],
+    },
+  });
+});
+
+// Mock by operation name - static response
+api.graphql.mock('GetSomething', {
+  statusCode: 200,
+  body: { data: { ... }, errors: [] },
+});
+```
+
+### Mocking Permissions
+
+```js
+Given('I have the "some/permission" permission', () => {
+  api.auth.setPermissionAllowed('some/permission', true);
+});
+```
+
+Or use existing step: `Given I have the "{string}" permission`
+
+## Intercepting Non-GraphQL Requests
+
+```js
+cy.intercept('https://some-api.example.com/*', {
+  statusCode: 200,
+  body: { message: 'OK' },
+});
+```
+
+## Best Practices
+
+1. **Reuse existing steps** from `step_definitions/` before creating new ones
+2. **Keep scenarios focused** — test one behaviour per scenario
+3. **Use page objects** — don't put selectors directly in step definitions
+4. **Mock at the right level** — prefer `api.graphql.mock()` over raw `cy.intercept()`
+5. **Maintain state in mocks** — see `common.js` pattern with mutable `users[]` array for stateful scenarios
+
+## Running Tests
+
+```bash
+# Run all
+yarn cypress run
+
+# Run specific feature
+yarn cypress run --spec "cypress/e2e/feature/test.feature"
+
+# Interactive mode
+yarn cypress open
+
+# Record new fixtures
+yarn cypress run --env record-graphql=true
+```
+
+## Common Patterns
+
+### Stateful Mock (CRUD operations)
+
+```js
+const items = [];
+
+api.graphql.mock('GetItems', (req) => {
+  req.on('response', (res) => {
+    res.body.data.items.nodes = items;
+  });
+});
+
+api.graphql.mock('CreateItem', (req) => {
+  items.push(req.body.variables.input);
+  req.reply({ statusCode: 200, body: { errors: [] } });
+});
+```
+
+### Asserting UI State
+
+```js
+// Visible content
+cy.contains('Expected text');
+
+// URL
+cy.url().should('include', '/expected-path');
+
+// Element should not exist
+cy.contains('Hidden thing').should('not.exist');
+```
+
+**REMEMBER: Tests intercept network calls. Never hit real APIs. Always mock or use recorded fixtures.**
