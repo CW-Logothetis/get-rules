@@ -9,7 +9,7 @@ OUTPUT_DIR=".cursor/reviews"
 # 1. Setup: Create temp directories and get the diff
 mkdir -p $OUTPUT_DIR
 echo "📝 Generating git diff..."
-git diff origin/develop > $DIFF_FILE
+git diff origin/develop...HEAD > $DIFF_FILE
 
 if [ ! -s $DIFF_FILE ]; then
     echo "No diff found. Exiting."
@@ -18,7 +18,7 @@ fi
 
 # Generate list of changed files for scoping
 FILES_LIST=".cursor/temp_changed_files.txt"
-git diff --name-only origin/develop > $FILES_LIST
+git diff --name-only origin/develop...HEAD > $FILES_LIST
 echo "📄 Changed files:"
 cat $FILES_LIST
 
